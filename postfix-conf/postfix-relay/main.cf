@@ -34,21 +34,27 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = docker
+myhostname = docker-relay
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 mydestination = $myhostname
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
-inet_protocols = all
 
 # POC - allow all inputs
 mynetworks = 0.0.0.0/0
 # POC - use mailpit as target
 relayhost = [mailpit]:1025
-# POC - log to stdout
-maillog_file = /dev/stdout
+# POC - logging
+maillog_file = /var/log/maillog-relay
 
-#multi_instance_wrapper = ${command_directory}/postmulti -p --
-#multi_instance_enable = yes
+## POC - multi instance
+data_directory = /var/lib/postfix-relay
+inet_protocols = ipv4
+queue_directory = /var/spool/postfix-relay
+authorized_submit_users = 
+master_service_disable =
+multi_instance_enable = yes
+multi_instance_group = mta
+multi_instance_name = postfix-relay
