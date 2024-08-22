@@ -1,0 +1,19 @@
+
+services:
+  postfix:
+    build: ./postfix
+    container_name: postmulti-postfix
+    image: local/postfix
+    ports:
+    - "1026:25"
+    volumes:
+    - "./postfix-conf:/postfix-conf"
+    depends_on:
+    - mailpit
+  mailpit:
+    image: axllent/mailpit
+    container_name: postmulti-mailpit
+    ports:
+    - "8035:8025"
+    expose:
+    - "1025/tcp"
