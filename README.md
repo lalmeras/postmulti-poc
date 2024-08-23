@@ -37,6 +37,16 @@ X-Priority: slow
 
 test
 EOF
+
+for i in $( seq 3 ); do
+msmtp -C msmtprc -a docker -t <<EOF
+To: lalmeras@gmail.com
+Subject: test
+X-Priority: slow
+
+test
+EOF
+done
 ```
 
 ## Consultation des mails
